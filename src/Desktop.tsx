@@ -229,6 +229,7 @@ function WindowTopbar(activeWindows:IconData[], setActiveWindows:Dispatch<SetSta
       <div className="topbar-button" onClick={
         (e) => {
           e.stopPropagation();
+          ResetElementData(icon);
           setActiveWindows(
             activeWindows.filter(element => 
               element.id !== icon.id
@@ -273,6 +274,16 @@ function WindowSizeButton(activeWindows:IconData[], setActiveWindows:Dispatch<Se
       return element
     }
   ));
+}
+
+// Function to reset data for element on next load.
+function ResetElementData(icon:IconData) {
+  icon.fullScreen = true;
+  icon.snapped = false;
+  icon.width = '100%';
+  icon.height = '100%';
+  icon.xValue = 0;
+  icon.yValue = 0;
 }
 
 // Function to load the entire desktop with the different components.
