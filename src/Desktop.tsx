@@ -69,6 +69,7 @@ const DesktopState = {
   draggedWindow: emptyIcon,
 }
 
+// Function to display all the desktop application icons.
 function WorkspaceIcons(activeWindows:IconData[], setActiveWindows:Dispatch<SetStateAction<IconData[]>>) {
   return (
     <div id="workspace-icons">
@@ -90,6 +91,7 @@ function WorkspaceIcons(activeWindows:IconData[], setActiveWindows:Dispatch<SetS
   );
 }
 
+// Function for the actions to be done when the desktop icon is clicked.
 function WorkspaceIconClick(activeWindows:IconData[], setActiveWindows:Dispatch<SetStateAction<IconData[]>>, icon:IconData) {
   let tempActive: IconData[] = [...activeWindows];
   if (!activeWindows.includes(icon)) {
@@ -112,6 +114,7 @@ function WorkspaceIconClick(activeWindows:IconData[], setActiveWindows:Dispatch<
   setActiveWindows(tempActive);
 }
 
+// Function to load the active windows on the taskbar.
 function TaskbarManager(activeWindows : IconData[], setActiveWindows:Dispatch<SetStateAction<IconData[]>>) {
   return (
     <div id="taskbar">
@@ -128,6 +131,7 @@ function TaskbarManager(activeWindows : IconData[], setActiveWindows:Dispatch<Se
   );
 }
 
+// Function for the actions to be done when the taskbar icons are pressed.
 function TaskBarIconClick(activeWindows:IconData[], setActiveWindows:Dispatch<SetStateAction<IconData[]>>, icon:IconData){
   setActiveWindows(
     activeWindows.map(element => {
@@ -146,6 +150,7 @@ function TaskBarIconClick(activeWindows:IconData[], setActiveWindows:Dispatch<Se
   ));
 }
 
+// Function to load the active windows in the workspace.
 function WindowManager(activeWindows: IconData[], setActiveWindows:Dispatch<SetStateAction<IconData[]>>) {
   return (
     <>
@@ -173,6 +178,7 @@ function WindowManager(activeWindows: IconData[], setActiveWindows:Dispatch<SetS
   );
 }
 
+// Function to bring forward the clicked window to the front.
 function WindowClick(activeWindows:IconData[], setActiveWindows:Dispatch<SetStateAction<IconData[]>>, icon:IconData) {
   setActiveWindows(
     activeWindows.map(element => {
@@ -186,13 +192,14 @@ function WindowClick(activeWindows:IconData[], setActiveWindows:Dispatch<SetStat
   );
 }
 
+// Function to load the window top bar in the window box;
 function WindowTopbar(activeWindows:IconData[], setActiveWindows:Dispatch<SetStateAction<IconData[]>>, icon:IconData) {
   return (
     <div className="window-topbar" onMouseDown={
       (e) => {
         let target = e.target as HTMLElement;
         if (target.className == 'window-topbar') {
-          WindowTopbarMouseDown(activeWindows, setActiveWindows, icon, e);
+          WindowTopbarMouseDown(icon, e);
         }
       }
     }>
@@ -235,28 +242,15 @@ function WindowTopbar(activeWindows:IconData[], setActiveWindows:Dispatch<SetSta
   )
 }
 
-function WindowTopbarMouseDown(activeWindows:IconData[], setActiveWindows:Dispatch<SetStateAction<IconData[]>>, icon:IconData, e:MouseEvent) {
-  if (icon.snapped || icon.fullScreen) {
-    setActiveWindows(
-      activeWindows.map(element => {
-        if (element.id == icon.id) {
-          element.height = (window.innerWidth * (9 / 32)) + "px";
-          element.width = (window.innerWidth * (1 / 2)) + "px";
-          element.xValue = e.pageX - (window.innerWidth * (1 / 4));
-          element.fullScreen = false;
-          element.snapped = false;
-        }
-        return element
-      }
-    ));
-  }
-  
+// Function to resize the windows when they are snapped or fullscreen and start dragging when window topbar is clicked.
+function WindowTopbarMouseDown(icon:IconData, e:MouseEvent) {
   DesktopState.isDraggingWindow = true;
   DesktopState.draggedWindow = icon;
   DesktopState.prevMousePos.x = e.pageX;
   DesktopState.prevMousePos.y = e.pageY;
 }
 
+// Function to resize the window when clicked on the size button.
 function WindowSizeButton(activeWindows:IconData[], setActiveWindows:Dispatch<SetStateAction<IconData[]>>, icon:IconData) {
   setActiveWindows(
     activeWindows.map(element => {
@@ -281,6 +275,7 @@ function WindowSizeButton(activeWindows:IconData[], setActiveWindows:Dispatch<Se
   ));
 }
 
+// Function to load the entire desktop with the different components.
 function Desktop() {
   const emptyWindow : IconData[] = []
   const [activeWindows, setActiveWindows] = useState(emptyWindow);
@@ -309,9 +304,24 @@ function Desktop() {
   )
 }
 
+// Function for actions when window is being dragged or moved around.
 function DragMouseMove(activeWindows: IconData[], setActiveWindows:Dispatch<SetStateAction<IconData[]>>, e:MouseEvent) {
   if(DesktopState.isDraggingWindow) {
     let movingWindow = DesktopState.draggedWindow;
+    if (movingWindow.snapped || movingWindow.fullScreen) {
+      setActiveWindows(
+        activeWindows.map(element => {
+          if (element.id == movingWindow.id) {
+            element.height = (window.innerWidth * (9 / 32)) + "px";
+            element.width = (window.innerWidth * (1 / 2)) + "px";
+            element.xValue = e.pageX - (window.innerWidth * (1 / 4));
+            element.fullScreen = false;
+            element.snapped = false;
+          }
+          return element
+        }
+      ));
+    }
     setActiveWindows(
       activeWindows.map((element) => {
         if(element.id == movingWindow.id) {
@@ -326,6 +336,8 @@ function DragMouseMove(activeWindows: IconData[], setActiveWindows:Dispatch<SetS
   }
 }
 
+// Function for action when mouse leaves the workspace area.
+// Leaving through the top will fullscreen, the sides will half and snap.
 function DragMouseLeave(activeWindows: IconData[], setActiveWindows:Dispatch<SetStateAction<IconData[]>>, e:MouseEvent) {
   if(DesktopState.isDraggingWindow) {
     let movingWindow = DesktopState.draggedWindow;
