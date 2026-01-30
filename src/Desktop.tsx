@@ -190,8 +190,10 @@ function WindowTopbar(activeWindows:IconData[], setActiveWindows:Dispatch<SetSta
   return (
     <div className="window-topbar" onMouseDown={
       (e) => {
-        e.stopPropagation();
-        WindowTopbarMouseDown(activeWindows, setActiveWindows, icon, e);
+        let target = e.target as HTMLElement;
+        if (target.className == 'window-topbar') {
+          WindowTopbarMouseDown(activeWindows, setActiveWindows, icon, e);
+        }
       }
     }>
       <div className="topbar-button" onClick={
