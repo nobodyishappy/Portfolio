@@ -120,6 +120,9 @@ function TaskbarManager(activeWindows : IconData[], setActiveWindows:Dispatch<Se
     <div id="taskbar">
       {activeWindows.map((icon: IconData) => (
         <div className='icon-box' key={icon.id} 
+          style={{
+            background:icon.zIndex == activeWindows.length && icon.active?'grey':''
+          }}
           onClick={() => {
             TaskBarIconClick(activeWindows, setActiveWindows, icon);
           }}
@@ -197,7 +200,9 @@ function WindowTopbar(activeWindows:IconData[], setActiveWindows:Dispatch<SetSta
   return (
     <div className="window-topbar" onMouseDown={
       (e) => {
+        e.stopPropagation();
         let target = e.target as HTMLElement;
+        WindowClick(activeWindows, setActiveWindows, icon)
         if (target.className == 'window-topbar') {
           WindowTopbarMouseDown(icon, e);
         }
@@ -210,6 +215,9 @@ function WindowTopbar(activeWindows:IconData[], setActiveWindows:Dispatch<SetSta
             activeWindows.map(element => {
               if (element.id == icon.id) {
                 element.active = false;
+                element.zIndex = 1;
+              } else if (element.zIndex <= icon.zIndex) {
+                element.zIndex++;
               }
               return element
             }
