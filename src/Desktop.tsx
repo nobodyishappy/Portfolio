@@ -1,6 +1,6 @@
 import { useState, type Dispatch, type MouseEvent, type ReactElement, type SetStateAction } from 'react';
 import './Desktop.css'
-import Scene from './Scene/Scene';
+import ShowcaseScene from './ShowcaseScene/ShowcaseScene';
 
 interface IconData {
   id: number;
@@ -37,7 +37,7 @@ const workspaceIcons: IconData[] = [
     id: 1, 
     image: '.png', 
     name: 'Test 1', 
-    element: Scene(), 
+    element: ShowcaseScene(), 
     active: false, 
     xValue: 0, 
     yValue: 0, 
