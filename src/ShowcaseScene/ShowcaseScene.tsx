@@ -1,7 +1,7 @@
 import "./ShowcaseScene.css";
 import { Pathfinding } from "three-pathfinding";
 import { Canvas, useFrame, useLoader, useThree, type Camera, type ThreeEvent } from "@react-three/fiber";
-import { useState, type Dispatch, type MouseEvent, type SetStateAction } from "react";
+import { useState, type Dispatch, type PointerEvent, type SetStateAction} from "react";
 import { Clock, MathUtils, Vector3} from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 import LoadStartingArea from "./StartingArea";
@@ -174,20 +174,16 @@ function InteractNavMesh(e:ThreeEvent<MouseEvent>, pathfinding:Pathfinding, setP
 function ShowcaseScene() {
     return (
         <div id="canvas-container"
-            // onClick={(e) => {
-            //     console.log(e.nativeEvent.offsetX);
-            //     console.log(e.nativeEvent.offsetY);
-            // }}
-            onMouseDown={(e) => {
+            onPointerDown={(e) => {
                 StartMouseInteract(e);
             }}
-            onMouseMove={(e) => {
+            onPointerMove={(e) => {
                 MoveMouseInteract(e);
             }}
-            onMouseLeave={() => {
+            onPointerLeave={() => {
                 EndMouseInteract();
             }}
-            onMouseUp={() => {
+            onPointerUp={() => {
                 EndMouseInteract();
             }}
         >
@@ -205,7 +201,7 @@ function ShowcaseScene() {
     )
 }
 
-function StartMouseInteract(e:MouseEvent) {
+function StartMouseInteract(e:PointerEvent) {
     if(!isInteractDown) {
         isInteractDown = true;
         characterCanMove = true;
@@ -217,7 +213,7 @@ function StartMouseInteract(e:MouseEvent) {
     }
 }
 
-function MoveMouseInteract(e:MouseEvent) {
+function MoveMouseInteract(e:PointerEvent) {
     if(isInteractMoving) {
         characterCanMove = false;
         if (!isInteractRotating) {

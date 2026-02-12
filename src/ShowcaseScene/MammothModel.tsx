@@ -18,6 +18,7 @@ function LoadMammothModel() {
 
         if(action) {
             action.play();
+            action.timeScale = 0.5;
         }
     }, []);
 
