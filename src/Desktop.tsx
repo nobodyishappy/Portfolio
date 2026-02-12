@@ -121,7 +121,28 @@ function WorkspaceIconClick(activeWindows:IconData[], setActiveWindows:Dispatch<
 function TaskbarManager(activeWindows : IconData[], setActiveWindows:Dispatch<SetStateAction<IconData[]>>, isMobile:boolean) {
   const taskbar = () => {
     if (isMobile) {
-      return;
+      return (
+      <div
+        style={{
+          display:'flex',
+          justifyContent:'space-evenly',
+          alignItems:'center',
+          width:'100%',
+          height:'100%',
+        }}
+      >
+        <div onClick={
+          () => {
+            setActiveWindows(
+              activeWindows.filter(() => {
+                false
+              })
+            )
+          }
+        }>
+          Home
+        </div>
+      </div>)
     } else {
       return activeWindows.map((icon: IconData) => (
         <div className='icon-box' key={icon.id} 
