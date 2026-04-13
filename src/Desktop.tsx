@@ -19,7 +19,7 @@ interface IconData {
 
 const emptyIcon = {
   id: 0, 
-  image: 'placeholder.png', 
+  image: './images/ShowcaseIcon.png', 
   name: 'empty', 
   element: <div>empty</div>, 
   active: false, 
@@ -35,23 +35,9 @@ const emptyIcon = {
 const workspaceIcons: IconData[] = [
   { 
     id: 1, 
-    image: '.png', 
+    image: './images/ShowcaseIcon.svg', 
     name: 'Showcase', 
     element: ShowcaseScene(), 
-    active: false, 
-    xValue: 0, 
-    yValue: 0, 
-    fullScreen: true,
-    snapped: false,
-    height: window.innerHeight,
-    width: window.innerWidth,
-    zIndex: 0,
-  },
-  { 
-    id: 2, 
-    image: '.png', 
-    name: 'Test 2', 
-    element: <div>Test</div>, 
     active: false, 
     xValue: 0, 
     yValue: 0, 
@@ -83,7 +69,7 @@ function WorkspaceIcons(activeWindows:IconData[], setActiveWindows:Dispatch<SetS
           }
         >
           <div className='icon-box'>
-            {icon.image}
+            <img className='icon-image' src={icon.image} alt='logo'/>
           </div>
           <div className='icon-name'>
             {icon.name}
