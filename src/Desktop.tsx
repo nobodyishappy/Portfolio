@@ -73,7 +73,7 @@ const DesktopState = {
 }
 
 // Function to display all the desktop application icons.
-function WorkspaceIcons(activeWindows:IconData[], setActiveWindows:Dispatch<SetStateAction<IconData[]>>, isMobile:boolean) {
+function WorkspaceIcons(activeWindows:IconData[], setActiveWindows:Dispatch<SetStateAction<IconData[]>>) {
   return (
     <div id="workspace-icons">
       {workspaceIcons.map((icon: IconData) => (
@@ -414,7 +414,7 @@ function Desktop() {
         }}
       >
         <img id='workspace-bg' src='./images/DarkOut.png' alt='Background'/>
-        {WorkspaceIcons(activeWindows, setActiveWindows, isMobile)}
+        {WorkspaceIcons(activeWindows, setActiveWindows)}
         {WindowManager(activeWindows, setActiveWindows, isMobile)}
       </div>
       {TaskbarManager(activeWindows, setActiveWindows, isMobile)}
